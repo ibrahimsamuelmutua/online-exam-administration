@@ -11,6 +11,46 @@
         }
 
     </style>
+      <script>
+          //Start of First Name validation Code
+    document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('first_name').addEventListener('input', function(event) {
+        var firstName = event.target.value;
+        var isValid = /^[a-zA-Z]{3,}$/.test(firstName); // Check if first name contains only letters and is at least 2 characters long
+        if (!isValid) {
+            event.target.setCustomValidity('First name must contain at least 3 letters and cannot contain numbers or special characters.');
+        } else {
+            event.target.setCustomValidity('');
+        }
+    });
+    //End of First Name Validation code
+
+
+        //Start of Last name Validation code
+    document.getElementById('last_name').addEventListener('input', function(event) {
+        var lastName = event.target.value;
+        var isValid = /^[a-zA-Z]{3,}$/.test(lastName); // Check if last name contains only letters and is at least 2 characters long
+        if (!isValid) {
+            event.target.setCustomValidity('Last name must contain at least 3 letters and cannot contain numbers or special characters.');
+        } else {
+            event.target.setCustomValidity('');
+        }
+    });
+    //End of Last Name validation code
+
+    //Start of Password Validation Code
+     document.getElementById('password').addEventListener('input', function(event) {
+            var password = event.target.value;
+            var isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ .test(password); // Check if password meets criteria
+            if (!isValid) {
+                event.target.setCustomValidity('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+            } else {
+                event.target.setCustomValidity('');
+            }
+        });
+     //end Of password validation code
+});
+      </script>
   </head>
   <body>
     {% include "exam/navbar.html" %}
@@ -20,39 +60,48 @@
 <br><br><br>
 <div class="container">
   <h3 style="text-align: center;">Student Signup Form</h3>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="container">
+            <div>
+                <strong class="text-center text-danger">{{message}}</strong>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
 <form method="POST" autocomplete="off" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="form-row">
         <div class="form-group col-md-6">
           <label for="first_name">First Name</label>
-          {% render_field userForm.first_name|attr:'required:true'  class="form-control" placeholder="First Name" %}
+          {% render_field userForm.first_name|attr:'required:true' name="first_name" type="text" id="first_name"  class="form-control" placeholder="First Name" %}
         </div>
         <div class="form-group col-md-6">
           <label for="last_name">Last Name</label>
-          {% render_field userForm.last_name|attr:'required:true'  class="form-control" placeholder="Last Name" %}
+          {% render_field userForm.last_name|attr:'required:true' name="last_name" id="last_name" type="text"  class="form-control" placeholder="Last Name" %}
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="mobile">Contact</label>
-          {% render_field studentForm.mobile|attr:'required:true'  class="form-control" placeholder="Contact Number" %}
+          {% render_field studentForm.mobile|attr:'required:true' type="tel" pattern="(\+254)?\d{9,11}"  class="form-control" placeholder="example  0796695184 or +254796695184" %}
         </div>
         <div class="form-group col-md-6">
-          <label for="address">Address</label>
-          {% render_field studentForm.address|attr:'required:true'  class="form-control" placeholder="Address" %}
+          <label for="address"> Email Address</label>
+          {% render_field studentForm.address|attr:'required:true' type="email" class="form-control" placeholder="enter your email address here" %}
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="username">Username</label>
-          {% render_field userForm.username|attr:'required:true'  class="form-control" placeholder="username" %}
+          {% render_field userForm.username|attr:'required:true' type="text" pattern="[a-zA-Z0-9_]{3,20}" title="Username must contain at least 3 letters and cannot contain numbers only"  class="form-control" placeholder="enter username here" %}
         </div>
         <div class="form-group col-md-6">
           <label for="inputPassword4">Password</label>
-          {% render_field userForm.password|attr:'required:true'  class="form-control" placeholder="password" %}
+          {% render_field userForm.password|attr:'required:true' type="password" id="password" name="password" class="form-control" placeholder="enter password here" %}
         </div>
       </div>
 

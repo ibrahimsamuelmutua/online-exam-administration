@@ -24,6 +24,9 @@
         <label for="question">Course</label>
       {% render_field questionForm.courseID|attr:'required:true' class="form-control"  %}
         <br>
+          <!--  <label for="examDuration" class="form-group">Exam Duration (minutes): </label>
+        {% render_field questionForm.exam_duration|attr:'required:true' class="form-control" type="number" id="examDuration" name="examDuration" min="1" %}-->
+
 
       <label for="question">Question</label>
       {% render_field questionForm.question|attr:'required:true' class="form-control" placeholder="Example: What is the relation calculus?" %}

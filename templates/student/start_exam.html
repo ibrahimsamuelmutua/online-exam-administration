@@ -12,16 +12,20 @@
 
 
 <div class="jumbotron my-4">
-
-  <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="/student/calculate-marks" method="POST">
+  <form class="form" id="myForm" autocomplete="off" onsubmit="return saveAns()"  action="/student/calculate-marks" method="POST">
     {% csrf_token %}
-    <h2 style="text-align: center;">Course: {{course.course_name}}</h2>
+      <h2 style="text-align: center;">Course: {{course.course_name}}</h2>
+    <p id="timer" class="text-info" style="text-align: center;font-weight:bold">Time remaining: <span id="countdown"></span></p>
+
+     <!--<input type="hidden" id="examDuration" name="examDuration" value="{{questionForm.exam_duration }}" />-->
+    <!--<p id="timer" class="text-info" style="text-align: center;font-weight:bold">Time remaining: <span id="countdown"></span></p>-->
+
     {% for q in questions%}
     <h3 class="text-danger">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[{{q.marks}} Marks]</h4>
-    
+
         <input type="hidden" name="csrfmiddlewaretoken" value="C24rUotmdHawVQJL3KrqiWxvti8UffOFYUc8TRbZtLt36AVLdP3jbkzUVe3beRAa">
-        
-        
+
+
           <div class="form-check mx-4">
             <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option1}}" value="Option1">
             <label class="form-check-label" for="option1">
@@ -29,7 +33,7 @@
             </label>
           </div>
 
-        
+
           <div class="form-check mx-4">
             <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option2}}" value="Option2">
             <label class="form-check-label" for="option2">
@@ -37,7 +41,7 @@
             </label>
           </div>
 
-        
+
           <div class="form-check mx-4">
             <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option3}}" value="Option3">
             <label class="form-check-label" for="option3">
@@ -45,7 +49,7 @@
             </label>
           </div>
 
-        
+
           <div class="form-check mx-4">
             <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option4}}" value="Option4">
             <label class="form-check-label" for="option4">
@@ -54,9 +58,10 @@
           </div>
 
         {% endfor %}
-        <input class="btn btn-success btn-lg" style="border-radius: 0%;"  type="submit" value="Submit Answers">  
+        <input class="btn btn-success btn-lg" style="border-radius: 0%;" id="submitButton"  type="submit" value="Submit Answers">
     </form>
-  </div>
+
+</div>
 
 <script> 
     function saveAns(){  
@@ -78,8 +83,55 @@
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+    // Countdown timer
+    let timeLeft =30; // Set the initial time in seconds
+   const countdownElement = document.getElementById('countdown');
 
-</script> 
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        countdownElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+       if (timeLeft > 0) {
+            timeLeft--;
+        } else {
+             //If time is up, submit the form
+           document.getElementById('submitButton').click();
+        }
+   }
+
+    //Update timer every second
+    setInterval(updateTimer, 1000);
+
+// Function to start countdown timer
+//function startCountdown(duration) {
+ //   setInterval(function () {
+        // Calculate minutes and seconds directly from the duration
+//        const minutes = Math.floor(duration / 60);
+//        const seconds = duration % 60;
+
+        // Format minutes and seconds to display with leading zeros if needed
+ //       const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+ //       const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+        // Display the time remaining
+//        document.getElementById('countdown').innerHTML = formattedMinutes + ':' + formattedSeconds;
+
+        // If the duration reaches zero, submit the form
+  //      if (duration-- <= 0) {
+        //    document.getElementById('myForm').submit();
+  //      }
+ //   }, 1000);
+//}
+
+// Get the exam duration from the hidden input field
+//const examDuration = parseInt(document.getElementById('examDuration').value, 10);
+
+// Start countdown timer
+//startCountdown(examDuration);
+
+
+
+</script>
 
 <br><br><br><br><br><br>
 {% endblock content %}

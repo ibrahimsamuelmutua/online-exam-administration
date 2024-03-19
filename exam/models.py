@@ -5,8 +5,10 @@ from student.models import Student
 
 class Course(models.Model):
     course_name = models.CharField(max_length=50)
-    question_number = models.PositiveIntegerField()
-    total_marks = models.PositiveIntegerField()
+    question_number = models.PositiveIntegerField(default=1)
+    total_marks = models.PositiveIntegerField(default=1)
+
+    # total_marks = models.PositiveIntegerField()
 
     def __str__(self):
         return self.course_name
@@ -14,6 +16,8 @@ class Course(models.Model):
 
 class Question(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    exam_duration =models.PositiveIntegerField(default=60)
+
     marks = models.PositiveIntegerField()
     question = models.CharField(max_length=600)
     option1 = models.CharField(max_length=200)
@@ -29,3 +33,12 @@ class Result(models.Model):
     exam = models.ForeignKey(Course, on_delete=models.CASCADE)
     marks = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now=True)
+
+
+#class ExamTime(models.Model):
+#    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+#    exam_duration = models.PositiveIntegerField(default=60)
+
+
+class CourseSelection(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
